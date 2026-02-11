@@ -585,6 +585,59 @@ const Index = () => {
     await handleGeneratePdf();
   };
 
+  // Global keyboard shortcuts for keyboard-first workflow
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!event.altKey) return;
+
+      const key = event.key.toLowerCase();
+
+      switch (key) {
+        case 'g': {
+          // Focus GST input
+          event.preventDefault();
+          document.getElementById('gst-input')?.focus();
+          break;
+        }
+        case 'i': {
+          // Focus inventory search
+          event.preventDefault();
+          document.getElementById('inventory-search')?.focus();
+          break;
+        }
+        case 'd': {
+          // Focus due date
+          event.preventDefault();
+          document.getElementById('due-date')?.focus();
+          break;
+        }
+        case 'n': {
+          // Focus notes
+          event.preventDefault();
+          document.getElementById('invoice-notes')?.focus();
+          break;
+        }
+        case 'p': {
+          // Generate PDF
+          event.preventDefault();
+          void handleGeneratePdf();
+          break;
+        }
+        case 'r': {
+          // Clear invoice
+          event.preventDefault();
+          handleClearInvoice();
+          break;
+        }
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleClearInvoice, handleGeneratePdf]);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -601,7 +654,13 @@ const Index = () => {
           </div>
           <div className="flex items-center gap-2">
             <AddCompanyDialog onAddCompany={handleAddCompany} />
-            <Button variant="outline" size="sm" onClick={handleClearInvoice}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleClearInvoice}
+              accessKey="r"
+              title="Clear (Alt+R)"
+            >
               <RotateCcw className="h-4 w-4 mr-1" />
               Clear
             </Button>
@@ -609,6 +668,8 @@ const Index = () => {
               size="sm" 
               onClick={handleGeneratePdf}
               disabled={isGenerating || invoiceItems.length === 0 || !selectedCompany}
+              accessKey="p"
+              title="Download PDF (Alt+P)"
             >
               {isGenerating ? (
                 <>
@@ -641,6 +702,51 @@ const Index = () => {
 
           {/* Right Content */}
           <div className="space-y-6">
+            {/* Keyboard shortcuts helper */}
+            <div className="rounded-lg border bg-muted/60 px-3 py-2 text-[11px] text-muted-foreground space-y-1">
+              <p className="font-medium text-foreground text-xs">
+                Keyboard shortcuts (minimize mouse usage)
+              </p>
+              <div className="grid gap-1 sm:grid-cols-2">
+                <span>
+                  <span className="font-mono bg-background border rounded px-1 py-0.5 mr-1">
+                    Alt+G
+                  </span>
+                  Focus GST number
+                </span>
+                <span>
+                  <span className="font-mono bg-background border rounded px-1 py-0.5 mr-1">
+                    Alt+I
+                  </span>
+                  Focus inventory search
+                </span>
+                <span>
+                  <span className="font-mono bg-background border rounded px-1 py-0.5 mr-1">
+                    Alt+D
+                  </span>
+                  Focus due date
+                </span>
+                <span>
+                  <span className="font-mono bg-background border rounded px-1 py-0.5 mr-1">
+                    Alt+N
+                  </span>
+                  Focus notes
+                </span>
+                <span>
+                  <span className="font-mono bg-background border rounded px-1 py-0.5 mr-1">
+                    Alt+P
+                  </span>
+                  Generate PDF
+                </span>
+                <span>
+                  <span className="font-mono bg-background border rounded px-1 py-0.5 mr-1">
+                    Alt+R
+                  </span>
+                  Clear invoice
+                </span>
+              </div>
+            </div>
+
             {/* Customer Details */}
             <GstLookup 
               selectedCompany={selectedCompany} 

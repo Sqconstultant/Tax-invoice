@@ -71,6 +71,7 @@ const GstLookup = ({ selectedCompany, onSelectCompany, companies }: GstLookupPro
         <div className="flex gap-2">
           <div className="flex-1">
             <Input
+              id="gst-input"
               placeholder="Enter GST Number (e.g., 27AABCU9603R1ZM)"
               value={gstNo}
               onChange={(e) => {
@@ -79,6 +80,12 @@ const GstLookup = ({ selectedCompany, onSelectCompany, companies }: GstLookupPro
               }}
               className="font-mono uppercase"
               maxLength={15}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleSearch();
+                }
+              }}
             />
           </div>
           <Button onClick={handleSearch} disabled={isSearching}>

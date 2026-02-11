@@ -48,6 +48,7 @@ const InventoryList = ({ items, onAddItem, onCreateInventoryItem, onRemoveInvent
         <div className="relative mt-3">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
+            id="inventory-search"
             placeholder="Search by name or HSN..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -64,6 +65,13 @@ const InventoryList = ({ items, onAddItem, onCreateInventoryItem, onRemoveInvent
             <div
               key={item.id}
               className="group flex items-center justify-between rounded-lg border bg-card p-3 transition-all hover:shadow-card-hover hover:border-primary/20"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  onAddItem(item);
+                }
+              }}
             >
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">

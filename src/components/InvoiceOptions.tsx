@@ -99,6 +99,7 @@ const InvoiceOptions = ({ options, onChange }: InvoiceOptionsProps) => {
               Due Date
             </Label>
             <Input
+              id="due-date"
               type="date"
               value={options.dueDate}
               onChange={(e) => onChange({ ...options, dueDate: e.target.value, paymentTerms: 'custom' })}
@@ -130,6 +131,7 @@ const InvoiceOptions = ({ options, onChange }: InvoiceOptionsProps) => {
           <div className="space-y-2">
             <Label>Vehicle No. (Optional)</Label>
             <Input
+              id="vehicle-no"
               placeholder="e.g., MH12AB1234"
               value={options.vehicleNo}
               onChange={(e) => onChange({ ...options, vehicleNo: e.target.value.toUpperCase() })}
@@ -142,6 +144,7 @@ const InvoiceOptions = ({ options, onChange }: InvoiceOptionsProps) => {
         <div className="space-y-2">
           <Label>Additional Notes / Remarks</Label>
           <Textarea
+            id="invoice-notes"
             placeholder="Add any special instructions, delivery notes, or remarks for this invoice..."
             value={options.notes}
             onChange={(e) => onChange({ ...options, notes: e.target.value })}
